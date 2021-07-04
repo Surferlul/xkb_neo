@@ -1175,26 +1175,6 @@ xkb_symbols "kou" {
 };
 
 partial alphanumeric_keys
-xkb_symbols "vou" {
-    include "de(kou)"
-
-    key <AB10> { [ k,                       K,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
-    key <AD01> { [ v,                       V,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
-    key <AD08> { [ l,                       L,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
-    key <AD09> { [ h,                       H,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
-    key <AC01> { [ c,                       C,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
-
-    name[Group1]= "German (VOU)";
-
-    include "shift(both_capslock)"
-    include "level3(caps_switch)" 
-    // use quote key (a-umlaut on German keyboards) as Mod3 switch
-    include "level3(quote_switch)"
-    include "level5(lsgt_switch_lock)"
-    include "level5(ralt_switch_lock)"
-};
-
-partial alphanumeric_keys
 xkb_symbols "bone_base" {
     include "de(neo_base)"
 
