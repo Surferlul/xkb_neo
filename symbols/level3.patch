@@ -1,7 +1,7 @@
-Index: xkeyboard-config-2.33/symbols/level3
+Index: xkeyboard-config-2.31/symbols/level3
 ===================================================================
---- xkeyboard-config-2.33.orig/symbols/level3
-+++ xkeyboard-config-2.33/symbols/level3
+--- xkeyboard-config-2.31.orig/symbols/level3
++++ xkeyboard-config-2.31/symbols/level3
 @@ -167,6 +167,16 @@
    include "level3(modifier_mapping)"
  };

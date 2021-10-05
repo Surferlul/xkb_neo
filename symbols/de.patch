@@ -1,8 +1,120 @@
-Index: xkeyboard-config-2.33/symbols/de
+Index: xkeyboard-config-2.31/symbols/de
 ===================================================================
---- xkeyboard-config-2.33.orig/symbols/de
-+++ xkeyboard-config-2.33/symbols/de
-@@ -453,11 +453,16 @@
+--- xkeyboard-config-2.31.orig/symbols/de
++++ xkeyboard-config-2.31/symbols/de
+@@ -1,5 +1,3 @@
+-// based on a keyboard map from an 'xkb/symbols/de' file
+-
+ default
+ xkb_symbols "basic" {
+ 
+@@ -99,7 +97,7 @@
+ 
+ partial alphanumeric_keys
+ xkb_symbols "e1" {
+-    // German extended layout E1 based on DIN 2137-1:2018-12
++    // German extended layout E1 based on DIN 2137-1:2020-11
+     // Designed for a 105-key keyboard
+     // https://de.wikipedia.org/wiki/Tastaturbelegung
+ 
+@@ -124,13 +122,13 @@
+     // second row
+     key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC";
+     key <AD01> { [               q,          Q,                   at, NoSymbol,            masculine,                U2642, NoSymbol, NoSymbol ] };
+-    key <AD02> { [               w,          W,           dead_caron, NoSymbol,          ordfeminine,                U2640, NoSymbol, NoSymbol ] };
++    key <AD02> { [               w,          W,          dead_macron, NoSymbol,          ordfeminine,                U2640, NoSymbol, NoSymbol ] };
+     key <AD03> { [               e,          E,             EuroSign, NoSymbol,                schwa,                SCHWA, NoSymbol, NoSymbol ] };
+     key <AD04> { [               r,          R,     dead_doubleacute, NoSymbol,            trademark,           registered, NoSymbol, NoSymbol ] };
+-    key <AD05> { [               t,          T,           dead_tilde, NoSymbol,                thorn,                THORN, NoSymbol, NoSymbol ] };
++    key <AD05> { [               t,          T,           dead_caron, NoSymbol,                thorn,                THORN, NoSymbol, NoSymbol ] };
+     key <AD06> { [               z,          Z,       dead_diaeresis, NoSymbol,                U0292,                U01B7, NoSymbol, NoSymbol ] };
+     key <AD07> { [               u,          U,           dead_breve, NoSymbol,           rightarrow,            leftarrow, NoSymbol, NoSymbol ] };
+-    key <AD08> { [               i,          I,          dead_macron, NoSymbol,             idotless,                U26A5, NoSymbol, NoSymbol ] };
++    key <AD08> { [               i,          I,           dead_tilde, NoSymbol,             idotless,                U26A5, NoSymbol, NoSymbol ] };
+     key <AD09> { [               o,          O,       dead_abovering, NoSymbol,               oslash,               Oslash, NoSymbol, NoSymbol ] };
+     key <AD10> { [               p,          P,            dead_hook, NoSymbol,            downarrow,              uparrow, NoSymbol, NoSymbol ] };
+     key <AD11> { [      udiaeresis, Udiaeresis,            dead_horn, NoSymbol,                U2198,                U2197, NoSymbol, NoSymbol ] };
+@@ -192,7 +190,7 @@
+ 
+ partial alphanumeric_keys
+ xkb_symbols "e2" {
+-    // German extended layout E2 based on DIN 2137-1:2018-12
++    // German extended layout E2 based on DIN 2137-1:2020-11
+     // Designed for a 104-key keyboard
+     // https://de.wikipedia.org/wiki/Tastaturbelegung
+ 
+@@ -293,36 +291,34 @@
+ 
+ partial alphanumeric_keys
+ xkb_symbols "ro" {
+-    // add romanian-specific letters to the basic German layout.
+-    // Romanian symbols are accessible with combination of <AltGr> and
++    // Adds Romanian-specific letters to the German basic layout.
++    // Romanian symbols are accessible by combining <AltGr> and
+     // 'a', 's', 't', 'i', 'ä (&auml)' (+<Shift> for capital letters).
+-    // To view romanian-specific symbols, add "export LC_CTYPE=ro_RO"
+-    // or "export LC_CTYPE=de_DE.utf8" to your .profile.
+ 
+     include "de(basic)"
+ 
+     name[Group1]="Romanian (Germany)";
+ 
+-    key <AD05> { [         t,    T,           tcedilla,     Tcedilla    ] };
++    key <AD05> { [         t,    T,              U021b,        U021a    ] };
+     key <AD08> { [         i,    I,        icircumflex,  Icircumflex    ] };
+     key <AC01> { [         a,    A,        acircumflex,  Acircumflex    ] };
+-    key <AC02> { [         s,    S,           scedilla,     Scedilla    ] };
++    key <AC02> { [         s,    S,              U0219,        U0218    ] };
+     key <AC11> { [ adiaeresis,   Adiaeresis,    abreve,       Abreve    ] };
+ };
+ 
+ partial alphanumeric_keys
+ xkb_symbols "ro_nodeadkeys" {
+-    // add romanian-specific letters to the German nodeadkeys layout.
++    // Adds Romanian-specific letters to the German nodeadkeys layout.
+     // Read the comment for de_ro !
+ 
+     include "de(nodeadkeys)"
+     name[Group1]="Romanian (Germany, no dead keys)";
+ 
+-    key <AD05> { [         t,    T,           tcedilla,     Tcedilla    ] };
++    key <AD05> { [         t,    T,              U021b,        U021a    ] };
+     key <AD08> { [         i,    I,        icircumflex,  Icircumflex    ] };
+     key <AC01> { [         a,    A,        acircumflex,  Acircumflex    ] };
+-    key <AC02> { [         s,    S,           scedilla,     Scedilla    ] };
+-    key <AC11> { [ adiaeresis,   Adiaeresis, abreve,       Abreve       ] };
++    key <AC02> { [         s,    S,              U0219,        U0218    ] };
++    key <AC11> { [ adiaeresis,   Adiaeresis,    abreve,       Abreve    ] };
+ };
+ 
+ // German Dvorak keymap by Thorsten Staerk (www.staerk.de/thorsten)
+@@ -384,25 +380,6 @@
+     include "level3(ralt_switch)"
+ };
+ 
+-partial alphanumeric_keys
+-xkb_symbols "Sundeadkeys" {
+-
+-    // For naming consistency
+-
+-    include "de(basic)"
+-
+-};
+-
+-partial alphanumeric_keys
+-xkb_symbols "sundeadkeys" {
+-
+-    // For naming consistency
+-
+-    include "de(Sundeadkeys)"
+-
+-    name[Group1]="German (Sun dead keys)";
+-};
+-
+ 
+ // German Neo-Layout Version 2
+ // adopted 2004 by Hanno Behrens <Hanno.Behrens@gmx.de>
+@@ -476,11 +453,16 @@
      // Top row
      // --------------------------------------------------------------
      key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";
@@ -24,7 +136,7 @@ Index: xkeyboard-config-2.33/symbols/de
  
      key <AD06> { [ k,                       K,                       exclam,                  Greek_kappa,             exclamdown,              NoSymbol,                multiply,                NoSymbol                 ] };
      key <AD07> { [ h,                       H,                       less,                    Greek_psi,               KP_7,                    KP_7,                    Greek_PSI,               NoSymbol                 ] };
-@@ -473,11 +478,16 @@
+@@ -496,11 +478,16 @@
      // Middle row
      // --------------------------------------------------------------
      key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";
@@ -46,7 +158,7 @@ Index: xkeyboard-config-2.33/symbols/de
  
      key <AC06> { [ s,                       S,                       question,                Greek_sigma,             questiondown,            NoSymbol,                Greek_SIGMA,             NoSymbol                 ] };
      key <AC07> { [ n,                       N,                       parenleft,               Greek_nu,                KP_4,                    KP_4,                    U2115,                   NoSymbol                 ] };
-@@ -489,11 +499,16 @@
+@@ -512,11 +499,16 @@
  
      // Bottom row
      // --------------------------------------------------------------
@@ -68,16 +180,23 @@ Index: xkeyboard-config-2.33/symbols/de
  
      key <AB06> { [ b,                       B,                       plus,                    Greek_beta,              colon,                   NoSymbol,                U21D0,                   NoSymbol                 ] };
      key <AB07> { [ m,                       M,                       percent,                 Greek_mu,                KP_1,                    KP_1,                    ifonlyif,                NoSymbol                 ] };
-@@ -517,7 +532,7 @@
+@@ -612,7 +604,6 @@
+     key <AC09>	{ [         l,          L,           at       ]	};
+     key <AC10>	{ [ odiaeresis, Odiaeresis,  dead_acute       ]	};
+     key <AB06>	{ [         n,          N,   asciitilde       ]	};
+-
+ };
  
-     // Topmost row
-     // --------------------------------------------------------------
--    key <KPDV> { [ KP_Divide,               KP_Divide,               division,                U2300,                   U2044,                   NoSymbol,                U2223,                   NoSymbol                 ] };
-+    key <KPDV> { [ KP_Divide,               KP_Divide,               division,                U2300,                   U2215,                   NoSymbol,                U2223,                   NoSymbol                 ] };
-     key <KPMU> { [ KP_Multiply,             KP_Multiply,             U22C5,                   U2299,                   multiply,                NoSymbol,                U2297,                   NoSymbol                 ] };
-     key <KPSU> { [ KP_Subtract,             KP_Subtract,             U2212,                   U2296,                   U2216,                   NoSymbol,                U2238,                   NoSymbol                 ] };
+ partial alphanumeric_keys
+@@ -894,7 +885,6 @@
+     key <AC02>  { [    s,      S,      U015F,  U015E   ] };
+     key <AC05>  { [    g,      G,      U011F,  U011E   ] };
+     key <AB03>  { [    c,      C,      U0E7,   U0C7    ] };
+-
+ };
  
-@@ -1037,6 +1052,148 @@
+ partial alphanumeric_keys
+@@ -1062,6 +1052,148 @@
      include "level5(ralt_switch_lock)"
  };
  
@@ -226,12 +345,9 @@ Index: xkeyboard-config-2.33/symbols/de
  partial alphanumeric_keys
  xkb_symbols "bone_base" {
      include "de(neo_base)"
-@@ -1195,7 +1352,7 @@
- };
- 
- partial alphanumeric_keys
--xkb_symbols "lld" {
-+    xkb_symbols "lld" {
-     include "de(basic)"
+@@ -1225,5 +1357,4 @@
      name[Group1] = "German (Ladin)";
  
+     key <AD10> { [ p, P, ediaeresis, Ediaeresis ] };
+-
+ };
