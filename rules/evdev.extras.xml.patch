@@ -1,0 +1,17 @@
+Index: xkeyboard-config-2.33/rules/evdev.extras.xml
+===================================================================
+--- xkeyboard-config-2.33.orig/rules/evdev.extras.xml
++++ xkeyboard-config-2.33/rules/evdev.extras.xml
+@@ -136,6 +136,12 @@
+             <name>koy</name>
+             <description>German (KOY)</description>
+           </configItem>
++  	</variant>
++        <variant>
++          <configItem>
++            <name>vou</name>
++            <description>German (VOU)</description>
++          </configItem>
+         </variant>
+         <variant>
+           <configItem popularity="exotic">
