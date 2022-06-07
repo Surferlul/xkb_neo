@@ -380,7 +380,7 @@ if "vou" not in de:
         f.write("\n".join(de))
 with open(f"{xkb}/symbols/level3", "r") as f:
     level3 = f.read()
-if "vou" not in level3:
+if "quote_switch" not in level3:
     level3 = level3.split("\n")
     bksl_switch = ([i for i in range(len(level3)) if "\"bksl_switch\"" in level3[i]][0], -1)
     bksl_switch = (bksl_switch[0]-1, bracket_end(level3, bksl_switch[0]))
