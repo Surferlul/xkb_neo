@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
+import os
+
+curr_dir = os.path.dirname(__file__)
 xkb = "/usr/share/X11/xkb"
+
 
 def brackets(text):
     res = 0
@@ -19,384 +23,50 @@ def brackets(text):
         slash = 0
     return res
 
-def bracket_end(code ,pos):
+
+def bracket_end(code, pos):
     indent = 0
     while indent := indent + brackets(code[pos]):
         pos += 1
     return pos + 1
 
+
 with open(f"{xkb}/rules/evdev.extras.xml", "r") as f:
-    evdev = f.read()
-if "vou" not in evdev:
-    evdev = evdev.split("\n")
+    evdev = f.read().split("\n")
+with open(f"{curr_dir}/patches/evdev", "r") as f:
+    evdev_patch = f.read().split("\n")
+with open(f"{xkb}/symbols/de", "r") as f:
+    de = f.read().split("\n")
+with open(f"{curr_dir}/patches/de_neo_base") as f:
+    de_neo_base_patch = f.read().split("\n")
+with open(f"{curr_dir}/patches/de_koy") as f:
+    de_koy_patch = f.read().split("\n")
+with open(f"{xkb}/symbols/level3", "r") as f:
+    level3 = f.read()
+with open(f"{curr_dir}/patches/level3") as f:
+    level3_patch = f.read().split("\n")
+
+if "vou" not in "\n".join(evdev):
     koy = [i for i in range(len(evdev)) if "koy" in evdev[i]][0] - 2
     vou = koy + 6
-    evdev = [*evdev[:vou],
-             '        <variant>',
-             '          <configItem popularity="exotic">',
-             '            <name>vou</name>',
-             '            <description>German (VOU)</description>',
-             '          </configItem>',
-             '        </variant>',
-             '        <variant>',
-             '          <configItem popularity="exotic">',
-             '            <name>kou</name>',
-             '            <description>German (KOU)</description>',
-             '          </configItem>',
-             '        </variant>',
-             *evdev[vou:]
-    ]
+    evdev = evdev[:vou] + evdev_patch + evdev[vou:]
     with open(f"{xkb}/rules/evdev.extras.xml", "w") as f:
         f.write("\n".join(evdev))
 
-with open(f"{xkb}/symbols/de", "r") as f:
-    de = f.read()
-if "vou" not in de:
-    de = de.split("\n")
+if "vou" not in "\n".join(de):
     neo_base = ([i for i in range(len(de)) if "\"neo_base\"" in de[i]][0], -1)
-    neo_base = (neo_base[0]-1, bracket_end(de, neo_base[0]))
-    de = [
-        *de[:neo_base[0]],
-        'partial alphanumeric_keys modifier_keys keypad_keys',
-        'xkb_symbols "neo_base" {',
-        '',
-        '    // Levels in Neo jargon',
-        '    // --------------------------------------------------------------',
-        '    // Ebene 1: normal',
-        '    // Ebene 2: Shift',
-        '    // Ebene 3: Mod3',
-        '    // Ebene 4: Mod4 (for marking something use Shift + Mod4)',
-        '    // Ebene 5: Shift + Mod3',
-        '    // Ebene 6: Mod3 + Mod4',
-        '    // Compose (not a level): Mod3 + Tab',
-        '    // Feststelltaste (Capslock): Shift + Shift',
-        '    // Mod4-Lock: Mod4 + Mod4',
-        '    // Mod4-Lock: Shift + Mod3 + Tab',
-        '',
-        '    // Legend',
-        '    // ===============',
-        '    // Levels in Xkbmap jargon to be found here in the definitions. ',
-        '    // These are the levels used, and Xorg\'s translations:',
-        '    // --------------------------------------------------------------',
-        '    // Xorg:       Level1                   Level2                   Level3                   Level4                   Level5                   Level6                   Level7                   Level8                   ',
-        '    // Neo:        Ebene1                   Ebene2                   Ebene3                   Ebene5                   Ebene4                   Pseudo-Ebene             Ebene6                   ???                      ',
-        '    // Keys (Neo): None                     Shift                    Mod3                     Mod3 + Shift             Mod4                     Mod4 + Shift             Mod3 + Mod4              Mod3 + Mod4 + Shift      ',
-        '',
-        '',
-        '    // Alphanumeric-keys',
-        '    // ===============',
-        '    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";',
-        '',
-        '    // Tab as Multi_key (Compose)',
-        '    // --------------------------------------------------------------',
-        '    key  <TAB> { [ Tab,                     ISO_Left_Tab,            Multi_key,               ISO_Level5_Lock,         NoSymbol,                NoSymbol,                NoSymbol,                ISO_Level5_Lock          ] };',
-        '',
-        '',
-        '    // Number row',
-        '    // --------------------------------------------------------------',
-        '    key <TLDE> { [ dead_circumflex,         dead_caron,              U21BB,                   U02DE,                   dead_abovedot,           Pointer_EnableKeys,      dead_belowdot,           NoSymbol                 ] };',
-        '',
-        '    key <AE01> { [ 1,                       degree,                  onesuperior,             onesubscript,            ordfeminine,             NoSymbol,                notsign,                 NoSymbol                 ] };',
-        '    key <AE02> { [ 2,                       section,                 twosuperior,             twosubscript,            masculine,               NoSymbol,                logicalor,               NoSymbol                 ] };',
-        '    key <AE03> { [ 3,                       U2113,                   threesuperior,           threesubscript,          numerosign,              NoSymbol,                logicaland,              NoSymbol                 ] };',
-        '    key <AE04> { [ 4,                       guillemotright,          U203A,                   femalesymbol,            NoSymbol,                NoSymbol,                U22A5,                   NoSymbol                 ] };',
-        '    key <AE05> { [ 5,                       guillemotleft,           U2039,                   malesymbol,              periodcentered,          NoSymbol,                U2221,                   NoSymbol                 ] };',
-        '    key <AE06> { [ 6,                       dollar,                  cent,                    U26A5,                   sterling,                NoSymbol,                U2225,                   NoSymbol                 ] };',
-        '',
-        '    key <AE07> { [ 7,                       EuroSign,                yen,                     U03F0,                   currency,                NoSymbol,                rightarrow,              NoSymbol                 ] };',
-        '    key <AE08> { [ 8,                       doublelowquotemark,      singlelowquotemark,      U27E8,                   Tab,                     ISO_Left_Tab,            U221E,                   NoSymbol                 ] };',
-        '    key <AE09> { [ 9,                       leftdoublequotemark,     leftsinglequotemark,     U27E9,                   KP_Divide,               KP_Divide,               variation,               NoSymbol                 ] };',
-        '    key <AE10> { [ 0,                       rightdoublequotemark,    rightsinglequotemark,    zerosubscript,           KP_Multiply,             KP_Multiply,             emptyset,                NoSymbol                 ] };',
-        '',
-        '    key <AE11> { [ minus,                   emdash,                  NoSymbol,                U2011,                   KP_Subtract,             KP_Subtract,             hyphen,                  NoSymbol                 ] };',
-        '    key <AE12> { [ dead_grave,              dead_cedilla,            dead_abovering,          dead_dasia,              dead_diaeresis,          NoSymbol,                dead_macron,             NoSymbol                 ] };',
-        '',
-        '    // Top row',
-        '    // --------------------------------------------------------------',
-        '    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";',
-        '    key <AD01> { symbols[Group1] = [	x,		X,		ellipsis,	Greek_xi,	Prior,				Prior,				Greek_XI,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<PGUP>),	RedirectKey(key=<PGUP>),	NoAction(),	NoAction()	]};',
-        '    key <AD02> { symbols[Group1] = [	v,		V,		underscore,	NoSymbol,	BackSpace,			BackSpace,			radical,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<BKSP>),	RedirectKey(key=<BKSP>),	NoAction(),	NoAction()	]};',
-        '    key <AD03> { symbols[Group1] = [	l,		L,		bracketleft,	Greek_lambda,	Up,				Up,				Greek_LAMBDA,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<UP>),		RedirectKey(key=<UP>),		NoAction(),	NoAction()	]};',
-        '    key <AD04> { symbols[Group1] = [	c,		C,		bracketright,	Greek_chi,	Delete,				Delete,				U2102,		NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<DELE>),	RedirectKey(key=<DELE>),	NoAction(),	NoAction()	]};',
-        '    key <AD05> { symbols[Group1] = [	w,		W,		asciicircum,	Greek_omega,	Next,				Next,				Greek_OMEGA,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<PGDN>),	RedirectKey(key=<PGDN>),	NoAction(),	NoAction()	]};',
-        '',
-        '    key <AD06> { [ k,                       K,                       exclam,                  Greek_kappa,             exclamdown,              NoSymbol,                multiply,                NoSymbol                 ] };',
-        '    key <AD07> { [ h,                       H,                       less,                    Greek_psi,               KP_7,                    KP_7,                    Greek_PSI,               NoSymbol                 ] };',
-        '    key <AD08> { [ g,                       G,                       greater,                 Greek_gamma,             KP_8,                    KP_8,                    Greek_GAMMA,             NoSymbol                 ] };',
-        '    key <AD09> { [ f,                       F,                       equal,                   Greek_phi,               KP_9,                    KP_9,                    Greek_PHI,               NoSymbol                 ] };',
-        '    key <AD10> { [ q,                       Q,                       ampersand,               U03D5,                   KP_Add,                  KP_Add,                  U211A,                   NoSymbol                 ] };',
-        '',
-        '    key <AD11> { [ ssharp,                  U1E9E,                   U017F,                   Greek_finalsmallsigma,   U2212,                   NoSymbol,                jot,                     NoSymbol                 ] };',
-        '',
-        '    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";',
-        '    key <AD12> { [ dead_acute,              dead_tilde,              dead_stroke,             dead_psili,              dead_doubleacute,        NoSymbol,                dead_breve,              NoSymbol                 ] };',
-        '',
-        '    // Middle row',
-        '    // --------------------------------------------------------------',
-        '    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";',
-        '    key <AC01> { symbols[Group1] = [	u,		U,		backslash,	NoSymbol,	Home,				Home,				includedin,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<HOME>),	RedirectKey(key=<HOME>),	NoAction(),	NoAction()	]};',
-        '    key <AC02> { symbols[Group1] = [	i,		I,		slash,		Greek_iota,	Left,				Left,				integral,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<LEFT>),	RedirectKey(key=<LEFT>),	NoAction(),	NoAction()	]};',
-        '    key <AC03> { symbols[Group1] = [	a,		A,		braceleft,	Greek_alpha,	Down,				Down,				U2200,		NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<DOWN>),	RedirectKey(key=<DOWN>),	NoAction(),	NoAction()	]};',
-        '    key <AC04> { symbols[Group1] = [	e,		E,		braceright,	Greek_epsilon,	Right,				Right,				U2203,		NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<RGHT>),	RedirectKey(key=<RGHT>),	NoAction(),	NoAction()	]};',
-        '    key <AC05> { symbols[Group1] = [	o,		O,		asterisk,	Greek_omicron,	End,				End,				elementof,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<END>),		RedirectKey(key=<END>),		NoAction(),	NoAction()	]};',
-        '',
-        '    key <AC06> { [ s,                       S,                       question,                Greek_sigma,             questiondown,            NoSymbol,                Greek_SIGMA,             NoSymbol                 ] };',
-        '    key <AC07> { [ n,                       N,                       parenleft,               Greek_nu,                KP_4,                    KP_4,                    U2115,                   NoSymbol                 ] };',
-        '    key <AC08> { [ r,                       R,                       parenright,              Greek_rho,               KP_5,                    KP_5,                    U211D,                   NoSymbol                 ] };',
-        '    key <AC09> { [ t,                       T,                       minus,                   Greek_tau,               KP_6,                    KP_6,                    partialderivative,       NoSymbol                 ] };',
-        '    key <AC10> { [ d,                       D,                       colon,                   Greek_delta,             KP_Separator,            comma,                   Greek_DELTA,             NoSymbol                 ] };',
-        '',
-        '    key <AC11> { [ y,                       Y,                       at,                      Greek_upsilon,           period,                  KP_Decimal,              nabla,                   NoSymbol                 ] };',
-        '',
-        '    // Bottom row',
-        '    // --------------------------------------------------------------',
-        '    key <AB01> { symbols[Group1] = [	udiaeresis,	Udiaeresis,	numbersign,	NoSymbol,	Escape,				Escape,				union,		NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<ESC>),		RedirectKey(key=<ESC>),		NoAction(),	NoAction()	]};',
-        '    key <AB02> { symbols[Group1] = [	odiaeresis,	Odiaeresis,	dollar,		U03F5,		Tab,				Tab,				intersection,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<TAB>),		RedirectKey(key=<TAB>),		NoAction(),	NoAction()	]};',
-        '    key <AB03> { symbols[Group1] = [	adiaeresis,	Adiaeresis,	bar,		Greek_eta,	Insert,				Insert,				U2135,		NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<INS>),		RedirectKey(key=<INS>),		NoAction(),	NoAction()	]};',
-        '    key <AB04> { symbols[Group1] = [	p,		P,		asciitilde,	Greek_pi,	Return,				Return,				Greek_PI,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<RTRN>),	RedirectKey(key=<RTRN>),	NoAction(),	NoAction()	]};',
-        '    key <AB05> { symbols[Group1] = [	z,		Z,		grave,		Greek_zeta,	Undo,				Redo,				U2124,		NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<UNDO>),	RedirectKey(key=<UNDO>),	NoAction(),	NoAction()	]};',
-        '',
-        '    key <AB06> { [ b,                       B,                       plus,                    Greek_beta,              colon,                   NoSymbol,                U21D0,                   NoSymbol                 ] };',
-        '    key <AB07> { [ m,                       M,                       percent,                 Greek_mu,                KP_1,                    KP_1,                    ifonlyif,                NoSymbol                 ] };',
-        '    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";',
-        '    key <AB08> { [ comma,                   endash,                  quotedbl,                U03F1,                   KP_2,                    KP_2,                    U21D2,                   NoSymbol                 ] };',
-        '    key <AB09> { [ period,                  enfilledcircbullet,      apostrophe,              U03D1,                   KP_3,                    KP_3,                    U21A6,                   NoSymbol                 ] };',
-        '    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";',
-        '    key <AB10> { [ j,                       J,                       semicolon,               Greek_theta,             semicolon,               NoSymbol,                Greek_THETA,             NoSymbol                 ] };',
-        '    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";',
-        '',
-        '    // Space key',
-        '    // --------------------------------------------------------------',
-        '    key <SPCE> { [ space,                   space,                   space,                   nobreakspace,            KP_0,                    KP_0,                    U202F,                   NoSymbol                 ] };',
-        '',
-        '',
-        '    // Keypad-keys',
-        '    // ===============',
-        '',
-        '    // The former Numlock key:',
-        '    key <NMLK> { [ Tab,                     ISO_Left_Tab,            equal,                   approxeq,                notequal,                Pointer_EnableKeys,      identical,               NoSymbol                 ] };',
-        '',
-        '    // Topmost row',
-        '    // --------------------------------------------------------------',
-        '    key <KPDV> { [ KP_Divide,               KP_Divide,               division,                U2300,                   U2215,                   NoSymbol,                U2223,                   NoSymbol                 ] };',
-        '    key <KPMU> { [ KP_Multiply,             KP_Multiply,             U22C5,                   U2299,                   multiply,                NoSymbol,                U2297,                   NoSymbol                 ] };',
-        '    key <KPSU> { [ KP_Subtract,             KP_Subtract,             U2212,                   U2296,                   U2216,                   NoSymbol,                U2238,                   NoSymbol                 ] };',
-        '',
-        '    // Top row',
-        '    // --------------------------------------------------------------',
-        '    key  <KP7> { [ KP_7,                    U2714,                   U2195,                   U226A,                   KP_Home,                 KP_Home,                 upstile,                 NoSymbol                 ] };',
-        '    key  <KP8> { [ KP_8,                    U2718,                   uparrow,                 intersection,            KP_Up,                   KP_Up,                   U22C2,                   NoSymbol                 ] };',
-        '    key  <KP9> { [ KP_9,                    dagger,                  U20D7,                   U226B,                   KP_Prior,                KP_Prior,                U2309,                   NoSymbol                 ] };',
-        '    key <KPAD> { [ KP_Add,                  KP_Add,                  plusminus,               U2295,                   U2213,                   NoSymbol,                U2214,                   NoSymbol                 ] };',
-        '',
-        '    // Middle row',
-        '    // --------------------------------------------------------------',
-        '    key  <KP4> { [ KP_4,                    club,                    leftarrow,               includedin,              KP_Left,                 KP_Left,                 U2286,                   NoSymbol                 ] };',
-        '    key  <KP5> { [ KP_5,                    EuroSign,                colon,                   U22B6,                   KP_Begin,                KP_Begin,                U22B7,                   NoSymbol                 ] };',
-        '    key  <KP6> { [ KP_6,                    U2023,                   rightarrow,              includes,                KP_Right,                KP_Right,                U2287,                   NoSymbol                 ] };',
-        '',
-        '    // Bottom row',
-        '    // --------------------------------------------------------------',
-        '    key  <KP1> { [ KP_1,                    diamond,                 U2194,                   lessthanequal,           KP_End,                  KP_End,                  downstile,               NoSymbol                 ] };',
-        '    key  <KP2> { [ KP_2,                    heart,                   downarrow,               union,                   KP_Down,                 KP_Down,                 U22C3,                   NoSymbol                 ] };',
-        '    key  <KP3> { [ KP_3,                    U2660,                   U21CC,                   greaterthanequal,        KP_Next,                 KP_Next,                 U230B,                   NoSymbol                 ] };',
-        '    key <KPEN> { [ KP_Enter,                KP_Enter,                KP_Enter,                KP_Enter,                KP_Enter,                KP_Enter,                KP_Enter,                NoSymbol                 ] };',
-        '    key <KPEQ> { [ KP_Equal,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // Bottommost row',
-        '    // --------------------------------------------------------------',
-        '    key  <KP0> { [ KP_0,                    U2423,                   percent,                 U2030,                   KP_Insert,               KP_Insert,               U25A1,                   NoSymbol                 ] };',
-        '    key <KPDL> { [ KP_Separator,            period,                  comma,                   minutes,                 KP_Delete,               KP_Delete,               seconds,                 NoSymbol                 ] };',
-        '};',
-        *de[neo_base[1]:]
-    ]
-
+    neo_base = (neo_base[0] - 1, bracket_end(de, neo_base[0]))
+    de = de[:neo_base[0]] + de_neo_base_patch + de[neo_base[1]:]
     koy = ([i for i in range(len(de)) if "\"koy\"" in de[i]][0], -1)
-    koy = (koy[0]-1, bracket_end(de, koy[0]))
-
-    de = [
-        *de[:koy[1]],
-        '',
-        'partial alphanumeric_keys modifier_keys keypad_keys',
-        'xkb_symbols "kou" {',
-        '',
-        '    include "de(koy_base)"',
-        '',
-        '    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";',
-        '    // level 4: replace numero sign by heavy check mark (key 3)',
-        '    key <AE03> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2714,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level 4: use unused place for heavy ballot X (key 4)',
-        '    key <AE04> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2718,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level 4: replace middle dot on key 5 with WHITE MEDIUM STAR',
-        '    key <AE05> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2B50,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level 4: move middle dot "·" from key 5 to key 7 (replacing the currency sign "¤")',
-        '    key <AE07> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                periodcentered,          NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // move comma and endash to QWERTZ-C key',
-        '    key <AB03> { [ comma,                   endash,                  NoSymbol,                U03F1,                   NoSymbol,                NoSymbol,                U21D2,                   NoSymbol                 ] };',
-        '',
-        '    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";',
-        '    // move f and ssharp keys to new positions, replace at by rightarrow; level4: replace period with semicolon',
-        '    key <AD10> { [ f,                       F,                       ampersand,               Greek_phi,               KP_Add,                  KP_Add,                  Greek_PHI,               NoSymbol                 ] };',
-        '    key <BKSL> { [ ssharp,                  U1E9E,                   rightarrow,              Greek_finalsmallsigma,   semicolon,               KP_Decimal,              jot,                     NoSymbol                 ] };',
-        '',
-        '    // rotate x, q, z, j and v',
-        '    key <AD06> { [ q,                       Q,                       NoSymbol,                U03D5,                   NoSymbol,                NoSymbol,                U211A,                   NoSymbol                 ] };',
-        '    key <AD11> { [ j,                       J,                       NoSymbol,                Greek_theta,             NoSymbol,                NoSymbol,                Greek_THETA,             NoSymbol                 ] };',
-        '    key <AB01> { [ z,                       Z,                       NoSymbol,                Greek_zeta,              NoSymbol,                NoSymbol,                U2124,                   NoSymbol                 ] };',
-        '    key <AB02> { [ x,                       X,                       NoSymbol,                Greek_xi,                NoSymbol,                NoSymbol,                Greek_XI,                NoSymbol                 ] };',
-        '    key <AB10> { [ v,                       V,                       NoSymbol,                radical,                 NoSymbol,                NoSymbol,                multiply,                NoSymbol                 ] };',
-        '',
-        '    // swap u, y and ä (and comma, but not here)',
-        '    key <AD04> { [ u,                       U,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                includedin,              NoSymbol                 ] };',
-        '    key <AC05> { [ y,                       Y,                       NoSymbol,                Greek_upsilon,           NoSymbol,                NoSymbol,                nabla,                   NoSymbol                 ] };',
-        '    key <AD05> { [ adiaeresis,              Adiaeresis,              NoSymbol,                Greek_eta,               NoSymbol,                NoSymbol,                U2135,                   NoSymbol                 ] };',
-        '',
-        '    // swap b, d and p',
-        '    key <AC06> { [ b,                       B,                       NoSymbol,                Greek_beta,              NoSymbol,                NoSymbol,                U21D0,                   NoSymbol                 ] };',
-        '    key <AB06> { [ p,                       P,                       NoSymbol,                Greek_pi,                NoSymbol,                NoSymbol,                Greek_PI,                NoSymbol                 ] };',
-        '    key <AB07> { [ d,                       D,                       NoSymbol,                Greek_delta,             NoSymbol,                NoSymbol,                Greek_DELTA,             NoSymbol                 ] };',
-        '',
-        '    // level3: replace long s by Euro sign',
-        '    key <AD11> { [ NoSymbol,                NoSymbol,                EuroSign,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level3: put braces ({, }) in upper row',
-        '    key <AD03> { symbols[Group1] = [ 	NoSymbol,	NoSymbol,	braceleft,	NoSymbol,	Up,				NoSymbol,	NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<UP>),		NoAction(),	NoAction(),	NoAction()	]};',
-        '    key <AD04> { [ NoSymbol,                NoSymbol,                braceright,              NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level3: swap underscore and percent',
-        '    key <AD02> { [ NoSymbol,                NoSymbol,                percent,                 NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB07> { [ NoSymbol,                NoSymbol,                underscore,              NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level3: replace … by @',
-        '    key <AD01> { [ NoSymbol,                NoSymbol,                at,                      NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level3: rearrangement of the home row',
-        '    key <AC01> { symbols[Group1] = [	NoSymbol,	NoSymbol,	bar,		NoSymbol,	Home,				Home,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<HOME>),	RedirectKey(key=<HOME>),	NoAction(),	NoAction()	]};',
-        '    key <AC02> { symbols[Group1] = [	NoSymbol,	NoSymbol,	grave,		NoSymbol,	Left,				Left,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<LEFT>),	RedirectKey(key=<LEFT>),	NoAction(),	NoAction()	]};',
-        '    key <AC03> { symbols[Group1] = [	NoSymbol,	NoSymbol,	parenleft,	NoSymbol,	Down,				Down,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<DOWN>),	RedirectKey(key=<DOWN>),	NoAction(),	NoAction()	]};',
-        '    key <AC04> { symbols[Group1] = [	NoSymbol,	NoSymbol,	parenright,	NoSymbol,	Right,				Right,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<RGHT>),	RedirectKey(key=<RGHT>),	NoAction(),	NoAction()	]};',
-        '',
-        '    key <AC07> { [ NoSymbol,                NoSymbol,                slash,                   NoSymbol,                4,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AC08> { [ NoSymbol,                NoSymbol,                colon,                   NoSymbol,                5,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AC10> { [ NoSymbol,                NoSymbol,                underscore,              NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level3: rearrangement of the bottom row',
-        '    key <AB02> { [ NoSymbol,                NoSymbol,                bracketleft,             NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB03> { [ NoSymbol,                NoSymbol,                bracketright,            NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB05> { [ NoSymbol,                NoSymbol,                dollar,                  NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB07> { [ NoSymbol,                NoSymbol,                quotedbl,                NoSymbol,                1,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB08> { [ NoSymbol,                NoSymbol,                apostrophe,              NoSymbol,                2,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB09> { [ NoSymbol,                NoSymbol,                backslash,               NoSymbol,                3,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '',
-        '    // level 4: rotate page down, backspace and delete',
-        '    key <AD02> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Next,				Next,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<PGDN>),	RedirectKey(key=<PGDN>),	NoAction(),	NoAction()	]};',
-        '    key <AD04> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	BackSpace,			BackSpace,			NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<BKSP>),	RedirectKey(key=<BKSP>),	NoAction(),	NoAction()	]};',
-        '    key <AD05> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Delete,				Delete,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<DELE>),	RedirectKey(key=<DELE>),	NoAction(),	NoAction()	]};',
-        '',
-        '    // level4: rotate escape,	insert and return; replace undo with thumbs up sign',
-        '    key <AB01> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Insert,				Insert,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<INS>),		RedirectKey(key=<INS>),		NoAction(),	NoAction()	]};',
-        '    key <AB03> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Return,				Return,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<RTRN>),	RedirectKey(key=<RTRN>),	NoAction(),	NoAction()	]};',
-        '    key <AB04> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Escape,				Escape,				NoSymbol,	NoSymbol	],',
-        '                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<ESC>),		RedirectKey(key=<ESC>),		NoAction(),	NoAction()	]};',
-        '    key <AB05> { [NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	underscore,	Undo,	NoSymbol,	NoSymbol	]};',
-        '',
-        '    // level4: swap . and ;',
-        '    // key BKSL was already changed above',
-        '    // key <BKSL> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                semicolon,               NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AB10> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                period,                  KP_Decimal,              NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level4: replace ¡ by :',
-        '    key <AD06> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                colon,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level4: replace ¿ by -',
-        '    key <AC06> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                minus,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    // level4: replace : by _',
-        '    key <AB06> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                0,              NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    name[Group1]= "German (KOU)";',
-        '',
-        '    include "shift(both_capslock)"',
-        '    include "level3(caps_switch)"',
-        '    // use quote key (a-umlaut on German keyboards) as Mod3 switch',
-        '    include "level3(quote_switch)"',
-        '    include "level5(lsgt_switch_lock)"',
-        '    include "level5(ralt_switch_lock)"',
-        '};',
-        '',
-        'partial alphanumeric_keys',
-        'xkb_symbols "vou" {',
-        '    include "de(kou)"',
-        '',
-        '    key <AB10> { [ k,                       K,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AD01> { [ v,                       V,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AD08> { [ l,                       L,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AD09> { [ h,                       H,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '    key <AC01> { [ c,                       C,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };',
-        '',
-        '    name[Group1]= "German (VOU)";',
-        '',
-        '    include "shift(both_capslock)"',
-        '    include "level3(caps_switch)"',
-        '    // use quote key (a-umlaut on German keyboards) as Mod3 switch',
-        '    include "level3(quote_switch)"',
-        '    include "level5(lsgt_switch_lock)"',
-        '    include "level5(ralt_switch_lock)"',
-        '};',
-        *de[koy[1]:]
-    ]
-
-    with open(f"{xkb}/symbols/de", "w") as f:
+    koy = (koy[0] - 1, bracket_end(de, koy[0]))
+    de = de[:koy[1]] + de_koy_patch + de[koy[1]:]
+    with open(f"{xkb}/symbols/de_neo_base", "w") as f:
         f.write("\n".join(de))
-with open(f"{xkb}/symbols/level3", "r") as f:
-    level3 = f.read()
-if "quote_switch" not in level3:
+
+if "quote_switch" not in "\n".join(level3):
     level3 = level3.split("\n")
     bksl_switch = ([i for i in range(len(level3)) if "\"bksl_switch\"" in level3[i]][0], -1)
-    bksl_switch = (bksl_switch[0]-1, bracket_end(level3, bksl_switch[0]))
-    level3 = [
-        *level3[:bksl_switch[1]],
-        '',
-        '// The Quote key (while pressed) chooses the third shift level.',
-        'partial modifier_keys',
-        'xkb_symbols "quote_switch" {',
-        '  key <AC11> {',
-        '    type[Group1]="ONE_LEVEL",',
-        '    symbols[Group1] = [ ISO_Level3_Shift ]',
-        '  };',
-        '  include "level3(modifier_mapping)"',
-        '};',
-        *level3[bksl_switch[1]:]
-    ]
+    bksl_switch = (bksl_switch[0] - 1, bracket_end(level3, bksl_switch[0]))
+    level3 = level3[:bksl_switch[1]] + level3_patch + level3[bksl_switch[1]:]
     with open(f"{xkb}/symbols/level3", "w") as f:
         f.write("\n".join(level3))

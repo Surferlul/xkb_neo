@@ -1,0 +1,142 @@
+
+partial alphanumeric_keys modifier_keys keypad_keys
+xkb_symbols "kou" {
+
+    include "de_neo_base(koy_base)"
+
+    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";
+    // level 4: replace numero sign by heavy check mark (key 3)
+    key <AE03> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2714,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level 4: use unused place for heavy ballot X (key 4)
+    key <AE04> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2718,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level 4: replace middle dot on key 5 with WHITE MEDIUM STAR
+    key <AE05> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2B50,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level 4: move middle dot "·" from key 5 to key 7 (replacing the currency sign "¤")
+    key <AE07> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                periodcentered,          NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // move comma and endash to QWERTZ-C key
+    key <AB03> { [ comma,                   endash,                  NoSymbol,                U03F1,                   NoSymbol,                NoSymbol,                U21D2,                   NoSymbol                 ] };
+
+    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";
+    // move f and ssharp keys to new positions, replace at by rightarrow; level4: replace period with semicolon
+    key <AD10> { [ f,                       F,                       ampersand,               Greek_phi,               KP_Add,                  KP_Add,                  Greek_PHI,               NoSymbol                 ] };
+    key <BKSL> { [ ssharp,                  U1E9E,                   rightarrow,              Greek_finalsmallsigma,   semicolon,               KP_Decimal,              jot,                     NoSymbol                 ] };
+
+    // rotate x, q, z, j and v
+    key <AD06> { [ q,                       Q,                       NoSymbol,                U03D5,                   NoSymbol,                NoSymbol,                U211A,                   NoSymbol                 ] };
+    key <AD11> { [ j,                       J,                       NoSymbol,                Greek_theta,             NoSymbol,                NoSymbol,                Greek_THETA,             NoSymbol                 ] };
+    key <AB01> { [ z,                       Z,                       NoSymbol,                Greek_zeta,              NoSymbol,                NoSymbol,                U2124,                   NoSymbol                 ] };
+    key <AB02> { [ x,                       X,                       NoSymbol,                Greek_xi,                NoSymbol,                NoSymbol,                Greek_XI,                NoSymbol                 ] };
+    key <AB10> { [ v,                       V,                       NoSymbol,                radical,                 NoSymbol,                NoSymbol,                multiply,                NoSymbol                 ] };
+
+    // swap u, y and ä (and comma, but not here)
+    key <AD04> { [ u,                       U,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                includedin,              NoSymbol                 ] };
+    key <AC05> { [ y,                       Y,                       NoSymbol,                Greek_upsilon,           NoSymbol,                NoSymbol,                nabla,                   NoSymbol                 ] };
+    key <AD05> { [ adiaeresis,              Adiaeresis,              NoSymbol,                Greek_eta,               NoSymbol,                NoSymbol,                U2135,                   NoSymbol                 ] };
+
+    // swap b, d and p
+    key <AC06> { [ b,                       B,                       NoSymbol,                Greek_beta,              NoSymbol,                NoSymbol,                U21D0,                   NoSymbol                 ] };
+    key <AB06> { [ p,                       P,                       NoSymbol,                Greek_pi,                NoSymbol,                NoSymbol,                Greek_PI,                NoSymbol                 ] };
+    key <AB07> { [ d,                       D,                       NoSymbol,                Greek_delta,             NoSymbol,                NoSymbol,                Greek_DELTA,             NoSymbol                 ] };
+
+    // level3: replace long s by Euro sign
+    key <AD11> { [ NoSymbol,                NoSymbol,                EuroSign,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level3: put braces ({, }) in upper row
+    key <AD03> { symbols[Group1] = [ 	NoSymbol,	NoSymbol,	braceleft,	NoSymbol,	Up,				NoSymbol,	NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<UP>),		NoAction(),	NoAction(),	NoAction()	]};
+    key <AD04> { [ NoSymbol,                NoSymbol,                braceright,              NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level3: swap underscore and percent
+    key <AD02> { [ NoSymbol,                NoSymbol,                percent,                 NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB07> { [ NoSymbol,                NoSymbol,                underscore,              NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level3: replace … by @
+    key <AD01> { [ NoSymbol,                NoSymbol,                at,                      NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level3: rearrangement of the home row
+    key <AC01> { symbols[Group1] = [	NoSymbol,	NoSymbol,	bar,		NoSymbol,	Home,				Home,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<HOME>),	RedirectKey(key=<HOME>),	NoAction(),	NoAction()	]};
+    key <AC02> { symbols[Group1] = [	NoSymbol,	NoSymbol,	grave,		NoSymbol,	Left,				Left,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<LEFT>),	RedirectKey(key=<LEFT>),	NoAction(),	NoAction()	]};
+    key <AC03> { symbols[Group1] = [	NoSymbol,	NoSymbol,	parenleft,	NoSymbol,	Down,				Down,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<DOWN>),	RedirectKey(key=<DOWN>),	NoAction(),	NoAction()	]};
+    key <AC04> { symbols[Group1] = [	NoSymbol,	NoSymbol,	parenright,	NoSymbol,	Right,				Right,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<RGHT>),	RedirectKey(key=<RGHT>),	NoAction(),	NoAction()	]};
+
+    key <AC07> { [ NoSymbol,                NoSymbol,                slash,                   NoSymbol,                4,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AC08> { [ NoSymbol,                NoSymbol,                colon,                   NoSymbol,                5,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AC10> { [ NoSymbol,                NoSymbol,                underscore,              NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level3: rearrangement of the bottom row
+    key <AB02> { [ NoSymbol,                NoSymbol,                bracketleft,             NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB03> { [ NoSymbol,                NoSymbol,                bracketright,            NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB05> { [ NoSymbol,                NoSymbol,                dollar,                  NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB07> { [ NoSymbol,                NoSymbol,                quotedbl,                NoSymbol,                1,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB08> { [ NoSymbol,                NoSymbol,                apostrophe,              NoSymbol,                2,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB09> { [ NoSymbol,                NoSymbol,                backslash,               NoSymbol,                3,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+
+    // level 4: rotate page down, backspace and delete
+    key <AD02> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Next,				Next,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<PGDN>),	RedirectKey(key=<PGDN>),	NoAction(),	NoAction()	]};
+    key <AD04> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	BackSpace,			BackSpace,			NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<BKSP>),	RedirectKey(key=<BKSP>),	NoAction(),	NoAction()	]};
+    key <AD05> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Delete,				Delete,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<DELE>),	RedirectKey(key=<DELE>),	NoAction(),	NoAction()	]};
+
+    // level4: rotate escape,	insert and return; replace undo with thumbs up sign
+    key <AB01> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Insert,				Insert,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<INS>),		RedirectKey(key=<INS>),		NoAction(),	NoAction()	]};
+    key <AB03> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Return,				Return,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<RTRN>),	RedirectKey(key=<RTRN>),	NoAction(),	NoAction()	]};
+    key <AB04> { symbols[Group1] = [	NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	Escape,				Escape,				NoSymbol,	NoSymbol	],
+                 actions[Group1] = [	NoAction(),	NoAction(),	NoAction(),	NoAction(),	RedirectKey(key=<ESC>),		RedirectKey(key=<ESC>),		NoAction(),	NoAction()	]};
+    key <AB05> { [NoSymbol,	NoSymbol,	NoSymbol,	NoSymbol,	underscore,	Undo,	NoSymbol,	NoSymbol	]};
+
+    // level4: swap . and ;
+    // key BKSL was already changed above
+    // key <BKSL> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                semicolon,               NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AB10> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                period,                  KP_Decimal,              NoSymbol,                NoSymbol                 ] };
+
+    // level4: replace ¡ by :
+    key <AD06> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                colon,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level4: replace ¿ by -
+    key <AC06> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                minus,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    // level4: replace : by _
+    key <AB06> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                0,              NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    name[Group1]= "German (KOU)";
+
+    include "shift(both_capslock)"
+    include "level3(caps_switch)"
+    // use quote key (a-umlaut on German keyboards) as Mod3 switch
+    include "level3(quote_switch)"
+    include "level5(lsgt_switch_lock)"
+    include "level5(ralt_switch_lock)"
+};
+
+partial alphanumeric_keys
+xkb_symbols "vou" {
+    include "de_neo_base(kou)"
+
+    key <AB10> { [ k,                       K,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AD01> { [ v,                       V,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AD08> { [ l,                       L,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AD09> { [ h,                       H,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+    key <AC01> { [ c,                       C,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
+
+    name[Group1]= "German (VOU)";
+
+    include "shift(both_capslock)"
+    include "level3(caps_switch)"
+    // use quote key (a-umlaut on German keyboards) as Mod3 switch
+    include "level3(quote_switch)"
+    include "level5(lsgt_switch_lock)"
+    include "level5(ralt_switch_lock)"
+};

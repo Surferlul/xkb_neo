@@ -1,0 +1,12 @@
+        <variant>
+          <configItem popularity="exotic">
+            <name>vou</name>
+            <description>German (VOU)</description>
+          </configItem>
+        </variant>
+        <variant>
+          <configItem popularity="exotic">
+            <name>kou</name>
+            <description>German (KOU)</description>
+          </configItem>
+        </variant>
