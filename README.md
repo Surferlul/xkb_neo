@@ -9,7 +9,7 @@ setxkbmap de vou
 
 to get proper keybindings working.
 
-Execute patch.py to patch your system.
+Execute patch.sh to patch your system.
 
 Or Manually:
 - execute patch_xkb.py as superuser to patch /usr/share/X11/xkb.
