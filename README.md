@@ -1,5 +1,13 @@
 # xkb_neo
-My xkb modifications for making neo etc (inclusive vou) work properly with every part of GNU/Linux. On X11 this works for all programs, on Wayland on the other hand, some Programs (for example Java applications) will not properly read some inputs.
+My xkb modifications for making neo etc (inclusive vou) work properly with every part of GNU/Linux. YES, even Java Applications.
+
+For programs running through XWayland manually execute
+
+~~~bash
+setxkbmap de vou
+~~~
+
+to get proper keybindings working.
 
 Execute patch.py to patch your system.
 
