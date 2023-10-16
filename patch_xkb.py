@@ -15,9 +15,9 @@ def brackets(text):
             if slash == 2:
                 break
             continue
-        if i == "{":
+        elif i == "{":
             res += 1
-        if i == "}":
+        elif i == "}":
             res -= 1
         slash = 0
     return res
