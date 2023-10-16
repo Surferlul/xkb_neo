@@ -59,7 +59,7 @@ if "vou" not in "\n".join(de):
     koy = ([i for i in range(len(de)) if "\"koy\"" in de[i]][0], -1)
     koy = (koy[0] - 1, bracket_end(de, koy[0]))
     de = de[:koy[1]] + de_koy_patch + de[koy[1]:]
-    with open(f"{xkb}/symbols/de_neo_base", "w") as f:
+    with open(f"{xkb}/symbols/de", "w") as f:
         f.write("\n".join(de))
 
 if "quote_switch" not in "\n".join(level3):
