@@ -10,16 +10,15 @@ def brackets(text):
     res = 0
     slash = 0
     for i in text:
-        match i:
-            case "/":
-                slash += 1
-                if slash == 2:
-                    break
-                continue
-            case "{":
-                res += 1
-            case "}":
-                res -= 1
+        if i == "/":
+            slash += 1
+            if slash == 2:
+                break
+            continue
+        if i == "{":
+            res += 1
+        if i == "}":
+            res -= 1
         slash = 0
     return res
 
