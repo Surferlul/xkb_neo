@@ -2,7 +2,7 @@
 partial alphanumeric_keys modifier_keys keypad_keys
 xkb_symbols "kou" {
 
-    include "de_neo_base(koy_base)"
+    include "de(koy_base)"
 
     key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";
     // level 4: replace numero sign by heavy check mark (key 3)
@@ -123,7 +123,7 @@ xkb_symbols "kou" {
 
 partial alphanumeric_keys
 xkb_symbols "vou" {
-    include "de_neo_base(kou)"
+    include "de(kou)"
 
     key <AB10> { [ k,                       K,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
     key <AD01> { [ v,                       V,                       NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol                 ] };
