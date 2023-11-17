@@ -2,8 +2,5 @@
 // The Quote key (while pressed) chooses the third shift level.
 partial modifier_keys
 xkb_symbols "quote_switch" {
-  key <AC11> {
-    type[Group1]="ONE_LEVEL",
-    symbols[Group1] = [ ISO_Level3_Shift ]
-  };
+  key <AC11> {[  ISO_Level3_Shift  ], type[group1]="ONE_LEVEL" };
 };

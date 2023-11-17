@@ -4,7 +4,7 @@ xkb_symbols "kou" {
 
     include "de(koy_base)"
 
-    key.type[Group1] = "EIGHT_LEVEL_LEVEL_FIVE_LOCK";
+    key.type[Group1] = "EIGHT_LEVEL_WITH_LEVEL5_LOCK";
     // level 4: replace numero sign by heavy check mark (key 3)
     key <AE03> { [ NoSymbol,                NoSymbol,                NoSymbol,                NoSymbol,                U2714,                   NoSymbol,                NoSymbol,                NoSymbol                 ] };
 
@@ -20,7 +20,7 @@ xkb_symbols "kou" {
     // move comma and endash to QWERTZ-C key
     key <AB03> { [ comma,                   endash,                  NoSymbol,                U03F1,                   NoSymbol,                NoSymbol,                U21D2,                   NoSymbol                 ] };
 
-    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_LEVEL_FIVE_LOCK";
+    key.type[Group1] = "EIGHT_LEVEL_ALPHABETIC_WITH_LEVEL5_LOCK";
     // move f and ssharp keys to new positions, replace at by rightarrow; level4: replace period with semicolon
     key <AD10> { [ f,                       F,                       ampersand,               Greek_phi,               KP_Add,                  KP_Add,                  Greek_PHI,               NoSymbol                 ] };
     key <BKSL> { [ ssharp,                  U1E9E,                   rightarrow,              Greek_finalsmallsigma,   semicolon,               KP_Decimal,              jot,                     NoSymbol                 ] };
