@@ -1,5 +1,5 @@
 # xkb_neo
-My xkb modifications for making neo etc (inclusive vou) work properly with every part of GNU/Linux. YES, even Java Applications.
+My xkb modifications for making neo etc (inclusive vou) work properly with every part of GNU/Linux.
 
 For programs running through XWayland manually execute
 
